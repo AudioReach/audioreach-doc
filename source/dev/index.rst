@@ -9,3 +9,4 @@ AudioReach Developer Guides
    dev_workflow
    plat_port
    available_modules
+   alsalib_using_audioreach
