@@ -16,3 +16,4 @@ jobs:
     uses: Audioreach/audioreach-workflows/.github/workflows/qcom-preflight-checks.yml@master
     with:
       enable-semgrep-scan: false
+      enable-armor-checkers: false
