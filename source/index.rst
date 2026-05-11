@@ -9,6 +9,8 @@ Welcome to AudioReach
 
 Announcements
 *************
+* (5/7/2026): The newly added :ref:`alsa_lib_using_audioreach` guide covers how to use ALSA lib with AudioReach to realize audio use-cases.
+
 * (10/6/2025): The newly added :ref:`dev_workflow` guide provides a starting point for developers to learn about the AudioReach developer workflow.
 
 * (8/22/2025): Two documentation pages have been recently released:

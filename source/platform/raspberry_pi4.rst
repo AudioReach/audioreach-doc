@@ -11,7 +11,9 @@ Raspberry Pi 4
 
 4. `Running an AudioReach Usecase <#running-an-audioreach-usecase>`__
 
-5. `Troubleshooting <#troubleshooting>`__
+5. `Using ALSA lib with AudioReach <#using-alsa-lib-with-audioreach>`__
+
+6. `Troubleshooting <#troubleshooting>`__
 
 This guide provides AudioReach Architecture overview on Raspberry Pi platform and walks through steps on how to create a Yocto image that integrates AudioReach,
 load that image on a Raspberry Pi4 device, and then run an AudioReach usecase.
@@ -133,6 +135,17 @@ To ensure the AudioReach system image is compiled as a part of the full Yocto bu
 	.. code-block:: bash
 
 		IMAGE_INSTALL:append = "audioreach-graphservices tinyalsa audioreach-graphmgr audioreach-engine audioreach-conf"
+
+To enable ALSA lib support, add the following ALSA packages to the "local.conf" file:
+
+	.. code-block:: bash
+
+		IMAGE_INSTALL:append = " \
+		alsa-lib \
+		alsa-utils \
+		alsa-tools \
+		alsa-state \
+		"
 
 Raspberry Pi devices do not have a DSP, so instead support for ARE (AudioReach engine) on the APPS processor must be enabled. To do this, add these additional lines to the "local.conf" file:
 
@@ -277,6 +290,37 @@ Once all of the above setup is complete, follow the below steps to run an audio 
 
 Now the ".wav" file should play through the external audio device. If the Raspberry Pi is connected to ARC, the current usecase graph will appear in the graph view.
 The system logs for the usecase will be saved in the file "/var/log/messages".
+
+Using ALSA lib with AudioReach
+==============================
+
+ALSA lib provides an alternative interface for audio playback and capture on the Raspberry Pi.
+The ALSA lib packages included in the Yocto build provide additional audio utilities and tools
+that can be used alongside AudioReach.
+
+For detailed information on ALSA lib integration with AudioReach, including metadata generation,
+configuration, and advanced use-cases, please refer to :ref:`alsa_lib_using_audioreach`.
+
+Using aplay for Audio Playback
+------------------------------
+
+**aplay** is an ALSA lib test application that serves as an alternative
+to **agmplay** for audio playback. To use aplay with AudioReach:
+
+   * Ensure the **agm_server** is running in a terminal:
+
+	.. code-block:: bash
+
+		agm_server
+
+   * In another terminal, use aplay to play an audio file:
+
+	.. code-block:: bash
+
+		aplay -D agm:100,100 /[path_to_audio_file]/<clip_name>.wav
+
+.. note::
+   The arguments ``agm:100,100`` correspond to ``CARD=100`` and ``DEV=100`` as defined in the AGM virtual sound card configuration. Card ID ``100`` identifies the AGM virtual sound card (``virtualsndcard``), and device ID ``100`` refers to ``PCM100``, the playback PCM device defined under that card. For capture, device ID ``101`` (``PCM101``) would be used instead. These IDs are not fixed by the plugin itself — they are defined in the virtual sound card definition file and must match accordingly.
 
 Troubleshooting
 ===============
