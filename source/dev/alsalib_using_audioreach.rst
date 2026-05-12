@@ -69,8 +69,8 @@ Add the following configuration to ``<yocto_build_root>/build/conf/local.conf`` 
 
 .. code-block:: bash
 
-    EXTRA_OECONF:pn-audioreach-graphmgr:append = " --enable-alsalib"
-    EXTRA_OECONF:pn-audioreach-conf:append = " --with-libalsa"
+    EXTRA_OECONF:append:pn-audioreach-graphmgr = " --enable-alsalib"
+    EXTRA_OECONF:append:pn-audioreach-conf = " --with-libalsa"
 
 **Autotools Build**
 
