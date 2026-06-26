@@ -8,3 +8,4 @@ Platform Reference Guide
 
    raspberry_pi4
    rb3_gen2
+   nxp
