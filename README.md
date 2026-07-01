@@ -16,23 +16,23 @@ hosted on GitHub Pages.
 
 * [Sphinx](https://www.sphinx-doc.org/en/master/usage/installation.html)
 	```
-	pip install -U sphinx
-	pip install sphinx-rtd-theme
+	pip install sphinx==9.1.0
+	pip install sphinx-rtd-theme==3.1.0
 	```
 
 * [Breathe](https://breathe.readthedocs.io/en/stable/#download)
 	```
-	pip install breathe
+	pip install breathe==4.36.0
 	```
 
 * **NOTE** AudioReach document is known to work with following tools and
 software package version:
 	```
-	breathe 4.35.0
-	Sphinx 5.3.0
-	sphinx-rtd-theme 2.0.0
-	doxygen 1.8.13
-	Python 3.6.9
+	breathe 4.36.0
+	Sphinx 9.1.0
+	sphinx-rtd-theme 3.1.0
+	doxygen 1.9.8
+	Python 3.12.13
 	```
 
 ## Steps to generate AudioReach documentation
