@@ -106,6 +106,7 @@ AudioReach components in the full Yocto build:
 
    IMAGE_INSTALL:append = "audioreach-graphservices tinyalsa audioreach-graphmgr audioreach-conf audioreach-kernel"
    PACKAGECONFIG:pn-audioreach-graphmgr = "use_default_acdb_path"
+   PACKAGECONFIG:append:pn-audioreach-graphservices = " audio_dma_support"
    EXTRA_OECONF:append:pn-audioreach-conf = " --with-nxp"
 
 Once the configuration is complete, run the following command to generate the full build with
