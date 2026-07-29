@@ -106,7 +106,28 @@ AudioReach components in the full Yocto build:
 
    IMAGE_INSTALL:append = "audioreach-graphservices tinyalsa audioreach-graphmgr audioreach-conf audioreach-kernel"
    PACKAGECONFIG:pn-audioreach-graphmgr = "use_default_acdb_path"
+   PACKAGECONFIG:append:pn-audioreach-graphservices = " audio_dma_support"
    EXTRA_OECONF:append:pn-audioreach-conf = " --with-nxp"
+
+Before running the final build, apply the following change to the Linux kernel device tree.
+The ``audioreach-kernel`` package includes the ``q6apm_audio_mem`` driver, which manages shared
+memory between the APPS processor and the ADSP. This driver probes on the ``qcom,q6apm-dais``
+compatible string to enable the audio memory device node.
+
+Use ``devtool modify`` to check out the kernel source into the workspace:
+
+.. code-block:: bash
+
+   devtool modify virtual/kernel
+
+In ``<yocto_build_root>/sources/linux-imx/arch/arm64/boot/dts/freescale/imx8mp-evk-dsp.dts``,
+add the following inside the root ``/ { }`` block:
+
+.. code-block:: dts
+
+   q6apmdai: dais {
+      compatible = "qcom,q6apm-dais";
+   };
 
 Once the configuration is complete, run the following command to generate the full build with
 the integrated AudioReach components:
