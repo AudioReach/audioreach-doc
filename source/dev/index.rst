@@ -4,7 +4,7 @@ AudioReach Developer Guides
 ##################################################
 
 .. toctree::
-   :maxdepth: 1
+   :maxdepth: 2
 
    dev_workflow
    plat_port
