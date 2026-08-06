@@ -5,7 +5,6 @@ Development Workflow
 
 .. toctree::
    :maxdepth: 1
-   :hidden:
 
    adding_modules
    capi_mod_dev
