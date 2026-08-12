@@ -24,9 +24,8 @@ Introduction
 
 This guide will outline how to incorporate, build, and test an audio algorithm in audioreach-engine, in the form of a **module**, using these basic steps:
 
-	.. figure:: images/adding_modules/workflow_diagram.png
+	.. figure:: images/adding_modules/adding_modules_workflow_diagram.png
 			:figclass: fig-center
-			:scale: 100 %
 
 As noted in the workflow diagram above, this guide will show how to add a module with source code, or how to instead add a prebuilt ".a" binary file, which will be discussed in the section `Create a build file <#create-a-build-file>`__.
 
