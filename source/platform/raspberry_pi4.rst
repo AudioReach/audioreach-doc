@@ -118,7 +118,7 @@ The AudioReach meta layer contains necessary build recipes for AudioReach. Clone
    .. code-block:: bash
 
       cd <yocto_build_root>/sources
-      git clone https://github.com/Audioreach/meta-audioreach.git
+      git clone https://github.com/Audioreach/meta-audioreach.git -b scarthgap
 	  
 Now navigate to the file "<yocto_build_root>/build/conf/bblayers.conf", and under the **BBLAYERS ?= " \\** section, append the below line to integrate the AudioReach meta layer:
 
