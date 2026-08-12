@@ -1,0 +1,113 @@
+diff --git a/arch/arm/boot/dts/broadcom/bcm2711-rpi-4-b.dts b/arch/arm/boot/dts/broadcom/bcm2711-rpi-4-b.dts
+index 75ce412a85dd..67d64eba457b 100644
+--- a/arch/arm/boot/dts/broadcom/bcm2711-rpi-4-b.dts
++++ b/arch/arm/boot/dts/broadcom/bcm2711-rpi-4-b.dts
+@@ -44,6 +44,18 @@ sd_vcc_reg: regulator-sd-vcc {
+ 		enable-active-high;
+ 		gpio = <&expgpio 6 GPIO_ACTIVE_HIGH>;
+ 	};
++
++	iqaudio_dac: iqaudio_dac {
++		compatible = "iqaudio,iqaudio-codec";
++		i2s-controller = <&i2s>;
++		status = "okay";
++	};
++};
++
++//i2s_clk_consumer: &i2s {};
++
++&ddc0 {
++	status = "okay";
+ };
+ 
+ &bt {
+@@ -399,17 +411,39 @@ &i2c0if {
+ 	clock-frequency = <100000>;
+ };
+ 
++&i2s {
++	pinctrl-names = "default";
++	pinctrl-0 = <&i2s_pins>;
++};
++
+ &i2c1 {
+ 	pinctrl-names = "default";
+ 	pinctrl-0 = <&i2c1_pins>;
+ 	clock-frequency = <100000>;
+-};
+ 
+-&i2s {
+-	pinctrl-names = "default";
+-	pinctrl-0 = <&i2s_pins>;
++	#address-cells = <1>;
++	#size-cells = <0>;
++	status = "okay";
++
++	da2713@1a {
++		#sound-dai-cells = <0>;
++		compatible = "dlg,da7213";
++		reg = <0x1a>;
++		status = "okay";
++	};
+ };
+ 
++//sound {
++//	iqaudio_dac: {
++//		compatible = "iqaudio,iqaudio-codec";
++//		i2s-controller = <&i2s>;
++//		status = "okay";
++//	};
++//	status = "okay";
++//}
++
++
++
+ // =============================================
+ // Board specific stuff here
+ 
+diff --git a/sound/soc/bcm/iqaudio-codec.c b/sound/soc/bcm/iqaudio-codec.c
+index 08b9c51759cc..cb7cc080b53a 100644
+--- a/sound/soc/bcm/iqaudio-codec.c
++++ b/sound/soc/bcm/iqaudio-codec.c
+@@ -249,6 +249,8 @@ static int snd_rpi_iqaudio_codec_probe(struct platform_device *pdev)
+ 		return ret;
+ 	}
+ 
++	dev_err(&pdev->dev, "Probed iqaudio_codec\n");
++
+ 	return 0;
+ }
+ 
+diff --git a/sound/soc/codecs/da7213.c b/sound/soc/codecs/da7213.c
+index 36439fbe0d76..7bda92ef6d35 100644
+--- a/sound/soc/codecs/da7213.c
++++ b/sound/soc/codecs/da7213.c
+@@ -1813,6 +1813,7 @@ static struct da7213_platform_data
+ static int da7213_probe(struct snd_soc_component *component)
+ {
+ 	struct da7213_priv *da7213 = snd_soc_component_get_drvdata(component);
++	pr_err("da7213 probe enter");
+ 
+ 	pm_runtime_get_sync(component->dev);
+ 
+@@ -1941,8 +1942,10 @@ static int da7213_probe(struct snd_soc_component *component)
+ 	/* Check if MCLK provided */
+ 	da7213->mclk = devm_clk_get(component->dev, "mclk");
+ 	if (IS_ERR(da7213->mclk)) {
+-		if (PTR_ERR(da7213->mclk) != -ENOENT)
++		if (PTR_ERR(da7213->mclk) != -ENOENT) {
++			pr_err("da7213 pointer error");
+ 			return PTR_ERR(da7213->mclk);
++		}
+ 		else
+ 			da7213->mclk = NULL;
+ 	} else {
+@@ -1952,6 +1955,8 @@ static int da7213_probe(struct snd_soc_component *component)
+ 		da7213->fixed_clk_auto_pll = true;
+ 	}
+ 
++	pr_err("Probed da7213");
++
+ 	return 0;
+ }
+ 

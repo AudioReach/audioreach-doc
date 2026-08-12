@@ -322,6 +322,73 @@ to **agmplay** for audio playback. To use aplay with AudioReach:
 .. note::
    The arguments ``agm:100,100`` correspond to ``CARD=100`` and ``DEV=100`` as defined in the AGM virtual sound card configuration. Card ID ``100`` identifies the AGM virtual sound card (``virtualsndcard``), and device ID ``100`` refers to ``PCM100``, the playback PCM device defined under that card. For capture, device ID ``101`` (``PCM101``) would be used instead. These IDs are not fixed by the plugin itself — they are defined in the virtual sound card definition file and must match accordingly.
 
+Audio Capture Use Case
+----------------------
+
+Capturing audio on the Rasbperry PI requires adding the Codec Zero audio board to the system. Follow the instructions to install and configure the Codec Zero audio board at: `Raspbery PI Audio Docs <https://www.raspberrypi.com/documentation/accessories/audio.html>`_
+
+Additionally update /boot/config.txt with the following changes:
+
+   * Navigate to the file "/boot/config.txt"
+   * Locate the line **dtoverlay=vc4-kms-v3d**
+   * Change this line to **dtoverlay=vc4-kms-v3d,noaudio**
+   * Locate the commented out line **#dtparam=i2s=on**
+   * Uncomment it to become: **dtparam=i2s=on**
+
+.. note::
+   **The Codec Zero device will need to be added manually to the Linux device tree to be enumerated by default.**
+   A patch file with the required device tree changes can be downloaded here: :download:`codecZeroDTChanges.patch <../static/codecZeroDTChanges.patch>`
+
+**Applying the Device Tree Patch**
+
+Before building the Yocto image, apply the provided patch to your Linux kernel source tree to add Codec Zero device tree support.
+
+   * Navigate to the root of your Linux kernel source directory:
+
+	.. code-block:: bash
+
+		cd <path_to_linux_kernel_source>
+
+   * Apply the patch using ``git apply``:
+
+	.. code-block:: bash
+
+		git apply codecZeroDTChanges.patch
+
+   * Alternatively, apply using the ``patch`` command:
+
+	.. code-block:: bash
+
+		patch -p1 < codecZeroDTChanges.patch
+
+   * Verify the patch was applied successfully:
+
+	.. code-block:: bash
+
+		git diff --stat
+
+   * Rebuild the kernel and device tree blobs, then reflash the image onto the Raspberry Pi.
+
+**Running the Capture Use Case**
+
+To run the audio capture use case:
+
+   * Ensure the **agm_server** is running in a terminal:
+
+	.. code-block:: bash
+
+		agm_server
+
+   * Run the AGM capture use case:
+
+	.. code-block:: bash
+
+		agmcap /etc/rec.wav -D 100 -d 101 -i PCM_RT_PROXY-TX-2
+
+The file /etc/rec.wav should contain stereo audio data captured from the MEMS microphones on the Codec Zero card.
+Use SCP to copy the recorded wav files to your host machine to play/edit in your favorite audio editor.
+
+
 Troubleshooting
 ===============
 
@@ -342,6 +409,9 @@ forgot to enable the sound cards (see section `Configure bootup settings <#confi
 	.. figure:: images/rpi_sound_cards.png
          :figclass: fig-left
          :scale: 100 %
+
+When connected to the Codec Zero device the sound card list should read:
+	0 [IQaudIOCODEC    ]: IQaudIOCODEC - IQaudIOCODEC
 
 Check the sound card ID
 -----------------------
