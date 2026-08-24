@@ -453,6 +453,43 @@ Mixer Control and Payload
        struct sg_prop sg_props;
    };
 
+
+The following is an example of how to setup use cases through the tinymix interface on raspberry pi4. Note this inteface is not meant for AudioReach aware clients but rather for development, testing and use case managemer (UCM) in Alsa.
+
+Make sure agm_server is running before executing these commands.
+
+.. code:: C
+
+    tinymix -D 100 set "PCM_RT_PROXY-RX-2 rate ch fmt" 48 2 16
+    tinymix -D 100 set "PCM100 connect" "PCM_RT_PROXY-RX-2"
+    tinymix -D 100 set "PCM100 metadata" 4 0 0 0 0 0 0 161 14 0 0 161 0 0 0 171 1 0 0 0 0 0 0 172 2 0 0 172 0 0 0 162 1 0 0 162 0 0 0 0
+
+
+The first command sets the backend PCM configuration as 48 kHz, stereo and 16 bits.
+The second command connects the front end PCM100 device to the backend PCM_RT_PROXY-RX-2 stereo playback device.
+The last command sets the metadata for PCM100. This is a GKV (Graph Key Vector) in little endian format.
+
+The first word is the number of GKs (Graph Keys) in the vector or 4, followed by 4 Graph Key Pairs as follows:
+
++--------------------+--------------------+--------------------+--------------------+------------------------+
+| Pair               | Key (Hex)          | Key Name           | Value (Hex)        | Value Name             |
++====================+====================+====================+====================+========================+
+| 1                  | 0xA1000000         | STREAMRX           | 0xA100000E         | PCM_LL_PLAYBAC         |
++--------------------+--------------------+--------------------+--------------------+------------------------+
+| 2                  | 0xAB000000         | INSTANCE           | 0x00000001         | INSTANCE_1             |
++--------------------+--------------------+--------------------+--------------------+------------------------+
+| 3                  | 0xAC000000         | DEVICEPP_RX        | 0xAC000001         | DEVICEPP_RX_AUDIOMBDRC |
++--------------------+--------------------+--------------------+--------------------+------------------------+
+| 4                  | 0xA2000000         | DEVICE_RX          | 0xA2000001         | SPEAKER                |
++--------------------+--------------------+--------------------+--------------------+------------------------+
+
+
+Audio playback with tinyplay through AudioReach is now possble:
+
+.. code:: C
+
+    tinplay -D 100 -d 100 <wavFile>
+
 Sample Mixer control setup for Usecases.
 ++++++++++++++++++++++++++++++++++++++++++++++
 
