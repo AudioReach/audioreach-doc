@@ -373,6 +373,25 @@ Before building the Yocto image, apply the provided patch to your Linux kernel s
 
 To run the audio capture use case:
 
+   * Turn on microphones and configure controls for Zero Codec card:
+
+	.. code-block:: bash
+
+		amixer -c 0 cset numid=23 on      # Mic 1 Switch ON
+		amixer -c 0 cset numid=1 5        # Mic 1 Volume
+		amixer -c 0 cset numid=24 on      # Mic 2 Switch ON
+		amixer -c 0 cset numid=2 5        # Mic 2 Volume
+		amixer -c 0 cset numid=27 on      # ADC Switch
+		amixer -c 0 cset numid=5 114,114  # ADC Volume
+		amixer -c 0 cset numid=26 on      # Mixin PGA Switch
+		amixer -c 0 cset numid=4 7,7      # Mixin PGA Volume
+		amixer -c 0 cset numid=73 on      # Mixin Left Mic 1 ON
+		amixer -c 0 cset numid=74 off     # Mixin Left Mic 2 OFF
+		amixer -c 0 cset numid=77 on      # Mixin Right Mic 2 ON
+		amixer -c 0 cset numid=78 off     # Mixin Right Mic 1 OFF
+		amixer -c 0 cset name='DAI Left Source MUX' 'ADC Left'
+		amixer -c 0 cset name='DAI Right Source MUX' 'ADC Right'
+
    * Ensure the **agm_server** is running in a terminal:
 
 	.. code-block:: bash

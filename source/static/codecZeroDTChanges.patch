@@ -1,8 +1,7 @@
 diff --git a/arch/arm/boot/dts/broadcom/bcm2711-rpi-4-b.dts b/arch/arm/boot/dts/broadcom/bcm2711-rpi-4-b.dts
-index 75ce412a85dd..510f946a8e56 100644
 --- a/arch/arm/boot/dts/broadcom/bcm2711-rpi-4-b.dts
 +++ b/arch/arm/boot/dts/broadcom/bcm2711-rpi-4-b.dts
-@@ -44,6 +44,12 @@ sd_vcc_reg: regulator-sd-vcc {
+@@ -38,6 +38,12 @@ sd_vcc_reg: regulator-sd-vcc {
  		enable-active-high;
  		gpio = <&expgpio 6 GPIO_ACTIVE_HIGH>;
  	};
@@ -15,24 +14,12 @@ index 75ce412a85dd..510f946a8e56 100644
  };
  
  &bt {
-@@ -399,17 +405,31 @@ &i2c0if {
- 	clock-frequency = <100000>;
- };
- 
-+&i2s {
-+	pinctrl-names = "default";
-+	pinctrl-0 = <&i2s_pins>;
-+};
-+
+@@ -402,10 +402,21 @@ &i2c0if {
  &i2c1 {
  	pinctrl-names = "default";
  	pinctrl-0 = <&i2c1_pins>;
  	clock-frequency = <100000>;
--};
- 
--&i2s {
--	pinctrl-names = "default";
--	pinctrl-0 = <&i2s_pins>;
++
 +	#address-cells = <1>;
 +	#size-cells = <0>;
 +	status = "okay";
@@ -45,9 +32,7 @@ index 75ce412a85dd..510f946a8e56 100644
 +	};
  };
  
-+
-+
-+
- // =============================================
- // Board specific stuff here
- 
+ &i2s {
+ 	pinctrl-names = "default";
+ 	pinctrl-0 = <&i2s_pins>;
+ };
