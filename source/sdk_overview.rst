@@ -111,10 +111,19 @@ Project is licensed under the `BSD-3-clause License <https://spdx.org/licenses/B
 .. _sdk_roadmap:
   
 Roadmap
-------------------
+-------
+
    .. figure:: images/roadmap.png
       :figclass: fig-center
 
       `AudioReach Development Phases`
+
+Past Execution Update
++++++++++++++++++++++
+
+   .. figure:: images/past_execution_updates.png
+      :figclass: fig-center
+
+      `Past Execution Updates`
 
 Feedback to help shaping AudioReach roadmap or contribution to pull in the timeline is highly welcome.
