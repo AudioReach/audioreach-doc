@@ -151,7 +151,7 @@ Raspberry Pi devices do not have a DSP, so instead support for ARE (AudioReach e
 
 		.. code-block:: bash
 
-			PACKAGECONFIG:pn-audioreach-graphmgr = "are_on_apps use_default_acdb_path"
+			PACKAGECONFIG:pn-audioreach-graphmgr = "are_on_apps use_default_acdb_path ipc_dbus"
 			PACKAGECONFIG:pn-audioreach-graphservices = "are_on_apps"
 
 Step 4: Compile the image
