@@ -1,0 +1,38 @@
+diff --git a/arch/arm/boot/dts/broadcom/bcm2711-rpi-4-b.dts b/arch/arm/boot/dts/broadcom/bcm2711-rpi-4-b.dts
+--- a/arch/arm/boot/dts/broadcom/bcm2711-rpi-4-b.dts
++++ b/arch/arm/boot/dts/broadcom/bcm2711-rpi-4-b.dts
+@@ -38,6 +38,12 @@ sd_vcc_reg: regulator-sd-vcc {
+ 		enable-active-high;
+ 		gpio = <&expgpio 6 GPIO_ACTIVE_HIGH>;
+ 	};
++
++	iqaudio_dac: iqaudio_dac {
++		compatible = "iqaudio,iqaudio-codec";
++		i2s-controller = <&i2s>;
++		status = "okay";
++	};
+ };
+ 
+ &bt {
+@@ -402,10 +402,21 @@ &i2c0if {
+ &i2c1 {
+ 	pinctrl-names = "default";
+ 	pinctrl-0 = <&i2c1_pins>;
+ 	clock-frequency = <100000>;
++
++	#address-cells = <1>;
++	#size-cells = <0>;
++	status = "okay";
++
++	da2713@1a {
++		#sound-dai-cells = <0>;
++		compatible = "dlg,da7213";
++		reg = <0x1a>;
++		status = "okay";
++	};
+ };
+ 
+ &i2s {
+ 	pinctrl-names = "default";
+ 	pinctrl-0 = <&i2s_pins>;
+ };
